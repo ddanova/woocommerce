@@ -144,10 +144,14 @@ class WC_Product_Variable extends WC_Product {
 			wc_deprecated_argument( 'visible_only', '2.7', 'WC_Product_Variable::get_visible_children' );
 			return $visible_only ? $this->get_visible_children() : $this->get_children();
 		}
+
+		$children = $this->children;
 		if ( has_filter( 'woocommerce_get_children' ) ) {
 			wc_deprecated_function( 'The woocommerce_get_children filter', '', 'woocommerce_product_get_children or woocommerce_product_get_visible_children' );
+			$children = apply_filters( 'woocommerce_get_children', $children, $this, false );
 		}
-		return apply_filters( 'woocommerce_get_children', $this->children, $this, false );
+
+		return apply_filters( 'woocommerce_product_get_children', $children, $this, false );
 	}
 
 	/**
@@ -157,10 +161,13 @@ class WC_Product_Variable extends WC_Product {
 	 * @return array Children ids
 	 */
 	public function get_visible_children() {
+		$children = $this->visible_children;
 		if ( has_filter( 'woocommerce_get_children' ) ) {
 			wc_deprecated_function( 'The woocommerce_get_children filter', '', 'woocommerce_product_get_children or woocommerce_product_get_visible_children' );
+			$children = apply_filters( 'woocommerce_get_children', $children, $this, false );
 		}
-		return apply_filters( 'woocommerce_get_children', $this->visible_children, $this, true );
+
+		return apply_filters( 'woocommerce_product_get_visible_children', $children, $this, true );
 	}
 
 	/**
